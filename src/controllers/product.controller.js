@@ -10,7 +10,7 @@ import { Product } from "../models/product.model.js";
 const addProduct = asyncHandler(async (req, res) => {
   // Step 1 : Get Product data from frontend
   // Step 2 : Validation
-  // Step 3 : Check for Product Images req.files?.photos[0]?.path;
+  // Step 3 : Check for Product Images req.files;
   // Step 4 : Upload Product Images to Cloudinary
   // Step 5 : Wait for all promises to resolve.
   // Step 6 : Create Product Object
@@ -42,7 +42,7 @@ const addProduct = asyncHandler(async (req, res) => {
       throw new ApiError(400, "All fields are required to add product");
     }
 
-    // Step 3 : Check for Product Images req.files?.photos[0]?.path;
+    // Step 3 : Check for Product Images req.files
     const productPhotosLocalPath = req.files;
 
     if (!productPhotosLocalPath || productPhotosLocalPath.length === 0) {
@@ -91,32 +91,33 @@ const addProduct = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, newlyCreatedProduct, "Product added"));
   } catch (err) {
-    console.log(err, " at addProduct");
     throw new ApiError(500, "Something went wrong while adding new product");
   }
 });
 
 const showProduct = asyncHandler(async (req, res) => {
   try {
-    const product = await productModel.find();
-    res.status(200).json({ product });
+    const products = await Product.find();
+    res.status(200).json(new ApiResponse(200, products, "Product found"));
   } catch (err) {
-    console.log(err, " at showProduct");
+    throw new ApiError(500, "Something went wrong while fetching products");
   }
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
-    const selectedProduct = await productModel.findByIdAndDelete(id);
+    const selectedProduct = await Product.findByIdAndDelete(id);
 
     if (!selectedProduct) {
-      res.status(404).send("Product not found");
+      throw new ApiError(404, "No such product exists");
     }
 
-    res.status(200).send("Product delete successfully");
+    res
+      .status(200)
+      .json(new ApiResponse(200, null, "Product deleted successfully"));
   } catch (err) {
-    console.log(err, "At Delete Product");
+    throw new ApiError(500, "Something went wrong while deleting product");
   }
 });
 
@@ -133,10 +134,9 @@ const updateProduct = asyncHandler(async (req, res) => {
       productDescription,
       stock,
       category,
-      photos,
     } = req.body;
 
-    const updateProduct = await productModel.findByIdAndUpdate(
+    const updateProduct = await Product.findByIdAndUpdate(
       id,
       {
         productName,

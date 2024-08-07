@@ -10,8 +10,8 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.route("/addProduct").post(upload.array("photos", 4), addProduct);
-router.route("/showProduct").post(showProduct);
-router.route("/deleteProduct/:id").post(deleteProduct);
-router.route("/updateProduct/:id").post(updateProduct);
+router.route("/showProduct").get(showProduct);
+router.route("/deleteProduct/:id").delete(deleteProduct);
+router.route("/updateProduct/:id").patch(updateProduct);
 
 export default router;
