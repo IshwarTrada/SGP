@@ -121,11 +121,18 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-const updateProduct = asyncHandler(async (req, res) => {
-  try {
-    const { id } = req.params;
-    const photoUrls = "";
+const updateProductData = asyncHandler(async (req, res) => {
+  // Step 1 : Get Product ID from params
+  // Step 2 : Get Product data from frontend
+  // Step 3 : Validation
+  // Step 4 : Update Product Data
+  // Step 5 : Check Product updated in database or not
 
+  try {
+    // Step 1 : Get Product ID from params
+    const { id } = req.params;
+
+    // Step 2 : Get Product data from frontend
     const {
       productName,
       productRating,
@@ -136,7 +143,23 @@ const updateProduct = asyncHandler(async (req, res) => {
       category,
     } = req.body;
 
-    const updateProduct = await Product.findByIdAndUpdate(
+    // Step 3 : Validation
+    if (
+      [
+        productName,
+        productRating,
+        shownPrice,
+        discountPrice,
+        productDescription,
+        stock,
+        category,
+      ].some((field) => field?.trim() === "")
+    ) {
+      throw new ApiError(400, "All fields are required to update product");
+    }
+
+    // Step 4 : Update Product Data
+    const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
         productName,
@@ -146,18 +169,92 @@ const updateProduct = asyncHandler(async (req, res) => {
         productDescription,
         stock: parseInt(stock, 10),
         category,
-        photos: photoUrls,
       },
       { new: true, runValidators: true }
     );
-    if (!updateProduct) {
-      return res.status(404).send("Product not found");
+
+    // Step 5 : Check Product updated in database or not
+    if (!updatedProduct) {
+      throw new ApiError(404, "Product data updation failed");
     }
 
-    res.status(200).send("Product updated successfully");
+    res
+      .status(200)
+      .json(new ApiResponse(200, updatedProduct, "Product updated"));
   } catch (err) {
-    console.log(err, " At update Product");
+    throw new ApiError(500, "Something went wrong while updating product");
   }
 });
 
-export { addProduct, showProduct, deleteProduct, updateProduct };
+const updateProductPhoto = asyncHandler(async (req, res) => {
+  // Step 1: Get Product ID and photo index from params
+  // Step 2: Get the new photo from the request
+  // Step 3: Upload the new photo to Cloudinary
+  // Step 4: Delete the old photo from Cloudinary
+  // Step 5: Update the photo URL in the product's photo array
+  // Step 6: Save the updated product
+
+  try {
+    // Step 1: Get Product ID and photo id from params
+    const { id } = req.params;
+    const { photoId } = req.body;
+
+    if (!photoId) {
+      throw new ApiError(400, "Can't get unique photo ID");
+    }
+
+    // Step 2: Get the new photo from the request
+    const newPhoto = req.file;
+
+    if (!newPhoto) {
+      throw new ApiError(400, "No photo provided");
+    }
+
+    // Find the product
+    const product = await Product.findById(id);
+
+    if (!product) {
+      throw new ApiError(404, "Product not found");
+    }
+
+    // Step 3: Upload the new photo to Cloudinary
+    const uploadResult = await uploadOnCloudinary(newPhoto.path);
+    if (!uploadResult) {
+      throw new ApiError(500, "Failed to upload new photo on cloudinary");
+    }
+
+    // Step 4: Delete the old photo from Cloudinary
+    const oldPhotoPublicId = photoId;
+    if (oldPhotoPublicId) {
+      await deleteFromCloudinary(oldPhotoPublicId);
+    }
+
+    // Step 5: Update the photo URL in the product's photo array
+    const updatedPhotoUrls = [...product.photos];
+    // updatedPhotoUrls[photoId] = uploadResult.secure_url;
+
+    // Step 6: Save the updated product
+    product.photos = uploadResult.secure_url;
+    await product.save();
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(200, product, "Product photo updated successfully")
+      );
+  } catch (err) {
+    console.error(err);
+    throw new ApiError(
+      500,
+      "Something went wrong while updating product photo"
+    );
+  }
+});
+
+export {
+  addProduct,
+  showProduct,
+  deleteProduct,
+  updateProductData,
+  updateProductPhoto,
+};
