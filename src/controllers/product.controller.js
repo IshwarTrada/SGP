@@ -87,7 +87,7 @@ const addProduct = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Product not added successfully");
     }
 
-    res
+    return res
       .status(200)
       .json(new ApiResponse(200, newlyCreatedProduct, "Product added"));
   } catch (err) {
@@ -99,7 +99,9 @@ const addProduct = asyncHandler(async (req, res) => {
 const showProduct = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find();
-    res.status(200).json(new ApiResponse(200, products, "Product found"));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, products, "Product found"));
   } catch (err) {
     throw new ApiError(500, "Something went wrong while fetching products");
   }
@@ -114,7 +116,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
       throw new ApiError(404, "No such product exists");
     }
 
-    res
+    return res
       .status(200)
       .json(new ApiResponse(200, null, "Product deleted successfully"));
   } catch (err) {
@@ -179,7 +181,7 @@ const updateProductData = asyncHandler(async (req, res) => {
       throw new ApiError(404, "Product data updation failed");
     }
 
-    res
+    return res
       .status(200)
       .json(new ApiResponse(200, updatedProduct, "Product updated"));
   } catch (err) {
@@ -239,7 +241,7 @@ const updateProductPhoto = asyncHandler(async (req, res) => {
   // Step 8: Delete the old photo from Cloudinary
   await deleteFromCloudinary(photoId);
 
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, product, "Product photo updated successfully"));
 });
