@@ -172,7 +172,7 @@ const updateProductData = asyncHandler(async (req, res) => {
         category,
       },
       { new: true, runValidators: true }
-    );
+    ).select("-photos");
 
     // Step 5 : Check Product updated in database or not
     if (!updatedProduct) {
@@ -189,67 +189,59 @@ const updateProductData = asyncHandler(async (req, res) => {
 
 const updateProductPhoto = asyncHandler(async (req, res) => {
   // Step 1: Get Product ID and photo index from params
-  // Step 2: Get the new photo from the request
-  // Step 3: Upload the new photo to Cloudinary
-  // Step 4: Delete the old photo from Cloudinary
-  // Step 5: Update the photo URL in the product's photo array
-  // Step 6: Save the updated product
+  // Step 2: Find the product
+  // Step 3: Check if the photoId is provided
+  // Step 4: Find the index of the photo in the product's photo array in db
+  // Step 5: Get the new photo from the request
+  // Step 6: Upload the new photo to Cloudinary
+  // Step 7: Replace the old photo URL with the new one and save the product in db
+  // Step 8: Delete the old photo from Cloudinary
 
-  try {
-    // Step 1: Get Product ID and photo id from params
-    const { id } = req.params;
-    const { photoId } = req.body; //hey
+  // Step 1: Get Product ID and photo id from params
+  const { id } = req.params;
+  const { photoId } = req.body;
 
-    if (!photoId) {
-      throw new ApiError(400, "Can't get unique photo ID");
-    }
-
-    // Step 2: Get the new photo from the request
-    const newPhoto = req.file.path;
-
-    if (!newPhoto) {
-      throw new ApiError(400, "No photo provided");
-    }
-
-    // Find the product
-    // const product = await Product.findById(id);
-
-    // if (!product) {
-    //   throw new ApiError(404, "Product not found");
-    // }
-
-    // Step 3: Upload the new photo to Cloudinary
-    const uploadResult = await uploadOnCloudinary(newPhoto);
-    if (!uploadResult) {
-      throw new ApiError(500, "Failed to upload new photo on cloudinary");
-    }
-
-    // Step 4: Delete the old photo from Cloudinary
-    const oldPhotoPublicId = photoId;
-    if (oldPhotoPublicId) {
-      await deleteFromCloudinary(oldPhotoPublicId);
-    }
-
-    // Step 5: Update the photo URL in the product's photo array
-    const updatedPhotoUrls = [...product.photos];
-    // updatedPhotoUrls[photoId] = uploadResult.secure_url;
-
-    // Step 6: Save the updated product
-    product.photos = uploadResult.secure_url;
-    await product.save();
-
-    res
-      .status(200)
-      .json(
-        new ApiResponse(200, product, "Product photo updated successfully")
-      );
-  } catch (err) {
-    console.error(err);
-    throw new ApiError(
-      500,
-      "Something went wrong while updating product photo"
-    );
+  // Step 2: Find the product
+  const product = await Product.findById(id, "photos");
+  if (!product) {
+    throw new ApiError(404, "Product not found");
   }
+
+  // Step 3: Check if the photoId is provided
+  if (!photoId) {
+    throw new ApiError(400, "Can't get unique photo ID");
+  }
+
+  // Step 4: Find the index of the photo in the product's photo array in db
+  const photoIndex = product.photos.findIndex(
+    (photoUrl) => photoUrl.includes(photoId) // Check if photoUrl contains the photoId (name)
+  );
+  if (photoIndex === -1) {
+    throw new ApiError(404, "No photo found with the given photoID in DB");
+  }
+
+  // Step 5: Get the new photo from the request
+  const newPhoto = req.file?.path;
+  if (!newPhoto) {
+    throw new ApiError(400, "No photo provided");
+  }
+
+  // Step 6: Upload the new photo to Cloudinary
+  const uploadResult = await uploadOnCloudinary(newPhoto);
+  if (!uploadResult || !uploadResult.secure_url) {
+    throw new ApiError(500, "Failed to upload new photo on cloudinary");
+  }
+
+  // Step 7: Replace the old photo URL with the new one and save the product in db
+  product.photos[photoIndex] = uploadResult.secure_url;
+  await product.save();
+
+  // Step 8: Delete the old photo from Cloudinary
+  await deleteFromCloudinary(photoId);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, product, "Product photo updated successfully"));
 });
 
 export {
