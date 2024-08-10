@@ -91,6 +91,7 @@ const addProduct = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, newlyCreatedProduct, "Product added"));
   } catch (err) {
+    console.log(err);
     throw new ApiError(500, "Something went wrong while adding new product");
   }
 });
@@ -197,28 +198,28 @@ const updateProductPhoto = asyncHandler(async (req, res) => {
   try {
     // Step 1: Get Product ID and photo id from params
     const { id } = req.params;
-    const { photoId } = req.body;
+    const { photoId } = req.body; //hey
 
     if (!photoId) {
       throw new ApiError(400, "Can't get unique photo ID");
     }
 
     // Step 2: Get the new photo from the request
-    const newPhoto = req.file;
+    const newPhoto = req.file.path;
 
     if (!newPhoto) {
       throw new ApiError(400, "No photo provided");
     }
 
     // Find the product
-    const product = await Product.findById(id);
+    // const product = await Product.findById(id);
 
-    if (!product) {
-      throw new ApiError(404, "Product not found");
-    }
+    // if (!product) {
+    //   throw new ApiError(404, "Product not found");
+    // }
 
     // Step 3: Upload the new photo to Cloudinary
-    const uploadResult = await uploadOnCloudinary(newPhoto.path);
+    const uploadResult = await uploadOnCloudinary(newPhoto);
     if (!uploadResult) {
       throw new ApiError(500, "Failed to upload new photo on cloudinary");
     }
