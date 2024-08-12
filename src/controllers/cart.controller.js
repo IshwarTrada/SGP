@@ -73,7 +73,7 @@ const addToCart = asyncHandler(async (req, res) => {
       existingItemIndex !== -1
         ? "Product quantity updated in cart"
         : "Product added to cart";
-    res.status(200).json(new ApiResponse(200, cart, actionMessage));
+    return res.status(200).json(new ApiResponse(200, cart, actionMessage));
   } catch (err) {
     console.log(err);
     throw new ApiError(
@@ -83,4 +83,77 @@ const addToCart = asyncHandler(async (req, res) => {
   }
 });
 
-export { addToCart };
+// Get Cart Details
+const getUserCart = asyncHandler(async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ userId: req.user._id })
+      .populate({
+        path: "items.productId",
+        select: "-productRating -productDescription -createdAt -updatedAt -__v",
+      })
+      .select("-createdAt -updatedAt -__v");
+    console.log(cart);
+
+    if (!cart) {
+      throw new ApiError(404, "Cart not found");
+    }
+    return res.status(200).json(new ApiResponse(200, cart, "Cart found"));
+  } catch (err) {
+    console.error("Error while fetching cart : ", err);
+    throw new ApiError(500, "Something went wrong while fetching cart");
+  }
+});
+
+// Remove item from cart
+const removeFromCart = asyncHandler(async (req, res) => {
+  // Step 1 : Get product data from frontend
+  const { productId } = req.params;
+
+  // Validate productId
+  if (!productId) {
+    throw new ApiError(400, "Product id is required");
+  }
+
+  // Step 2: Find the cart
+  const cart = await Cart.findOne({ userId: req.user._id });
+
+  // If cart does not exist, throw an error
+  if (!cart) {
+    throw new ApiError(404, "Cart not found");
+  }
+
+  // Step 3: Find the item in the cart
+  const itemIndex = cart.items.findIndex(
+    (item) => item.productId.toString() === productId
+  );
+
+  // If item does not exist in the cart, throw an error
+  if (itemIndex === -1) {
+    throw new ApiError(404, "Item not found in cart");
+  }
+
+  try {
+    // Step 4: Remove the item from the cart
+    cart.items.splice(itemIndex, 1);
+
+    // Step 5: Calculate total cost
+    cart.totalCost = cart.items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    await cart.save();
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, null, "Product removed from cart"));
+  } catch (error) {
+    console.error("Error while removing item from cart : ", error);
+    throw new ApiError(
+      500,
+      "Something went wrong while removing item from cart"
+    );
+  }
+});
+
+export { addToCart, getUserCart, removeFromCart };
