@@ -19,7 +19,6 @@ function PaymentComponent() {
   // Function to create an order and handle the Razorpay checkout
   const createRazorpayOrder = async (amount) => {
     try {
-      console.log("AMOUNT", amount)
       const response = await axios.post("http://localhost:3000/api/v1/razorpay/createOrder", {
         amount: amount * 100, // Amount in paise
         currency: "INR",
@@ -27,8 +26,8 @@ function PaymentComponent() {
       console.log(response);
       
 
-      const { order_id, config } = response.data.data;
-      handleRazorpayScreen(order_id, config, response.data.data.amount);
+      const { order_id, config } = response.data;
+      handleRazorpayScreen(order_id, config, amount);
     } catch (error) {
       console.error("Error at frontend:", error);
     }
@@ -74,7 +73,7 @@ function PaymentComponent() {
     axios
       .get(`http://localhost:3000/api/v1/razorpay/fetchPaymentDetails/${paymentId}`)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         setResponseState(response.data);
       })
       .catch((error) => {
@@ -84,7 +83,7 @@ function PaymentComponent() {
 
   return (
     <div className="App">
-      <button className="bg-slate-400" onClick={() => createRazorpayOrder(2100)}>Payment of 350</button>
+      <button className="bg-slate-400" onClick={() => createRazorpayOrder(2100)}>Payment of 2100</button>
       {responseId && <p>{responseId}</p>}
       <h1>This is payment verification form</h1>
       <form onSubmit={paymentFetch}>
