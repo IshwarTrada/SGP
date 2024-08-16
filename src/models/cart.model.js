@@ -12,9 +12,14 @@ const cartItemSchema = new Schema(
       required: true,
       default: 1,
     },
-    price: {
+    price:{
       type: Number,
       required: true,
+    },
+    productSubTotal: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
   { timestamps: true }

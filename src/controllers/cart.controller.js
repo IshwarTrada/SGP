@@ -15,9 +15,8 @@ const addToCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity = 1, currency = "INR" } = req.body;
 
-  const quantityInt = parseInt(quantity);
   // Validate quantity
-  if (quantityInt <= 0 || !Number.isInteger(quantityInt)) {
+  if (quantity <= 0 || !Number.isInteger(quantity)) {
     throw new ApiError(400, "Quantity must be a positive integer");
   }
 
@@ -49,21 +48,24 @@ const addToCart = asyncHandler(async (req, res) => {
 
     // If the item already exists in the cart, update the quantity
     if (existingItemIndex !== -1) {
-      cart.items[existingItemIndex].quantity = quantityInt; // Update quantity
+      cart.items[existingItemIndex].quantity = quantity; // Update quantity
       cart.items[existingItemIndex].price = product.discountPrice; // Update price if necessary
+      cart.items[existingItemIndex].productSubTotal =
+        product.discountPrice * quantity; // Update price if necessary
     }
     // Only add a new item if it does not exist in the cart
     else {
       cart.items.push({
         productId: productId, // Store only the product ID
         quantity,
-        price: product.discountPrice, // Set price using the product's discountPrice
+        price: product.discountPrice, // Store the product's discountPrice
+        productSubTotal: product.discountPrice * quantity, // Set price using the product's discountPrice
       });
     }
 
     // Step 5: Calculate total cost
     cart.totalCost = cart.items.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.productSubTotal,
       0
     );
 
@@ -138,7 +140,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
 
     // Step 5: Calculate total cost
     cart.totalCost = cart.items.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.productSubTotal,
       0
     );
 
