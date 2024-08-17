@@ -2,7 +2,6 @@ import Razorpay from "razorpay";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import crypto from "crypto";
 
 // Create a new order
 const createOrder = asyncHandler(async (req, res) => {
@@ -95,34 +94,39 @@ const fetchPaymentDetails = asyncHandler(async (req, res) => {
   }
 });
 
-// verify paymnent using razorpay webhook
-const verifyPayment = asyncHandler(async (req, res) => {
-  // Step 1: define secret of webhooks which is as same as you define when you create webhook
-  const secret = process.env.RZP_WEBHOOK_SECRET;
+// // verify paymnent using razorpay webhook
+// const verifyPayment = asyncHandler(async (req, res) => {
+//   // Step 1: define secret of webhooks which is as same as you define when you create webhook
+//   const secret = process.env.RZP_WEBHOOK_SECRET;
 
-  // Step 2: Extract the signature sent in the request headers
-  const receivedSignature = req.headers["x-razorpay-signature"];
+//   // Step 2: Extract the signature sent in the request headers
+//   const receivedSignature = req.headers["x-razorpay-signature"];
 
-  // console.log(req.body);
+//   // console.log(req.body);
 
-  // Step 3: Create HMAC using the same secret and request body
-  const shasum = crypto
-    .createHmac("sha256", secret) // give a key to HMAC
-    .update(JSON.stringify(req.body)); // give a data which we want to encrypt
+//   // Step 3: Create HMAC using the same secret and request body
+//   const shasum = crypto
+//     .createHmac("sha256", secret) // give a key to HMAC
+//     .update(JSON.stringify(req.body)); // give a data which we want to encrypt
 
-  const digest = shasum.digest("hex"); // give encrypted data in hexadecimal format
+//   const digest = shasum.digest("hex"); // give encrypted data in hexadecimal format
 
-  // Step 4: Compare the received signature with the calculated digest
-  if (receivedSignature === digest) {
-    // Signature is valid, process the request
+//   // Step 4: Compare the received signature with the calculated digest
+//   if (receivedSignature === digest) {
+//     // Signature is valid, process the request
+//     const paymentEntity = req.body.payload.payment.entity;
 
-    res.status(200).send("Signature verified");
-  } else {
-    // Signature is invalid
-    res.status(400).send("Invalid signature");
-  }
+//     if (paymentEntity.status === "captured") {
+//       await createOrder(req, res);
+//     } else {
+//       throw new ApiError(400, "Payment not captured, unable to process order.");
+//     }
+//   } else {
+//     // Signature is invalid
+//     res.status(400).send("Invalid signature");
+//   }
 
-  res.json({ status: "ok" });
-});
+//   res.json({ status: "ok" });
+// });
 
-export { createOrder, fetchPaymentDetails, verifyPayment };
+export { createOrder, fetchPaymentDetails };

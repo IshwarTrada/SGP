@@ -25,7 +25,7 @@ const cartItemSchema = new Schema(
   { timestamps: true }
 );
 
-const cartSchema = new mongoose.Schema(
+const cartSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
