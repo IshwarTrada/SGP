@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    font-family: 'Poppins';
-  }
-  
+
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins/Poppins-Regular.ttf");
+}
+

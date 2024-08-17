@@ -1,15 +1,20 @@
-import React from 'react'
-import Navbar from './Navbar'
-import { Outlet } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import Navi from "../components/Navbar";
+import StaticFooter from "../components/Staticfooter";
+import { Outlet } from "react-router-dom";
 
-function home() {
-  return (
-    <div>
-      <Navbar/>
-      <Outlet/>
-      <h1 className='text-red-600'>Home</h1>
-    </div>
-  )
+function Home() {
+     return (
+          <>
+          <div className="flex flex-col col-span-8">
+
+         <Navi/>
+         {/* <Link to="/signup">Signup</Link> */}
+         <Outlet/>
+          <StaticFooter/>
+          </div>
+          </>
+     )
 }
 
-export default home
+export default Home;
