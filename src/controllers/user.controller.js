@@ -62,7 +62,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // Step 6: Remove sensitive information from response
   const createdUser = await User.findById(newUser._id)
-    .select("-password -refreshToken") // Exclude sensitive fields
+    .select("-fname -lname -password -address -refreshToken -updatedAt -__v") // Exclude sensitive fields
     .lean();
 
   // Step 7: Check for user creation
@@ -104,8 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const loggedInUser = await User.findById(user._id)
-    .select("-password -refreshToken")
-    .lean();
+    .select("-password -address -refreshToken -updatedAt -__v");
 
   return res
     .status(200)
@@ -114,7 +113,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: loggedInUser, accessToken, refreshToken },
+        { user: loggedInUser },
         "User logged in successfully"
       )
     );
@@ -134,7 +133,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, {}, "User logged out successfully"));
+    .json(new ApiResponse(200, null, "User logged out successfully"));
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
