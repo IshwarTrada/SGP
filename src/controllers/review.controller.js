@@ -47,7 +47,7 @@ const getReviews = asyncHandler(async (req, res) => {
   }
   try {
     // Query the database for reviews with the given product_id
-    const reviews = await Review.find({ productId });
+    const reviews = await Review.find({ productId }).select("-productId -helpfulCount");
 
     // If no reviews found
     if (reviews.length === 0) {
@@ -58,7 +58,7 @@ const getReviews = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, reviews, "Reviews found"));
   } catch (err) {
     console.error(`Error while fetching reviews : ${err.message}`);
-    throw new ApiError(500, "Something went wrong while fetching reviews");
+    throw new ApiError(500, `Something went wrong while fetching reviews ${err.message}`);
   }
 });
 
@@ -100,14 +100,14 @@ const updateReview = asyncHandler(async (req, res) => {
         new: true,
         runValidators: true,
       }
-    );
+    ).select("-productId -helpfulCount");
     if (!review) {
       throw new ApiError(404, "Review not found");
     }
 
     return res.status(200).json(new ApiResponse(200, review, "Review updated"));
   } catch (err) {
-    throw new ApiError(500, `Something went wrong while updating review ${err.message}`);
+    throw new ApiError(500, `Something went wrong while updating review: ${err.message}`);
   }
 });
 
