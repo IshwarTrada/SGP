@@ -8,8 +8,7 @@ import {
 const router = Router();
 
 // Create a new order
-// router.route("/createOrder").post(verifyJwt, createOrder);
-router.route("/createOrder").post(createOrder);
+router.route("/createOrder").post(verifyJwt, createOrder);
 
 // fetch payment details by paymentId
 router
