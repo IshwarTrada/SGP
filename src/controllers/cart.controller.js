@@ -77,7 +77,6 @@ const addToCart = asyncHandler(async (req, res) => {
         : "Product added to cart";
     return res.status(200).json(new ApiResponse(200, cart, actionMessage));
   } catch (err) {
-    console.log(err);
     throw new ApiError(
       500,
       `Something went wrong while adding product to cart ${err.message}`
@@ -91,18 +90,35 @@ const getUserCart = asyncHandler(async (req, res) => {
     const cart = await Cart.findOne({ userId: req.user._id })
       .populate({
         path: "items.productId",
-        select: "-productRating -productDescription -createdAt -updatedAt -__v",
+        select:
+          "-productRating -stock -category -productDescription -createdAt -updatedAt -__v",
       })
-      .select("-createdAt -updatedAt -__v");
-    console.log(cart);
+      .select("-userId -_id -items._id -items.price -createdAt -updatedAt -__v");
 
     if (!cart) {
       throw new ApiError(404, "Cart not found");
     }
-    return res.status(200).json(new ApiResponse(200, cart, "Cart found"));
+
+    // Process the cart data to include only the first photo URL
+    const modifiedCart = {
+      ...cart.toObject(),
+      items: cart.items.map((item) => ({
+        ...item.toObject(),
+        productId: {
+          ...item.productId.toObject(),
+          photos:
+            item.productId.photos.length > 0 ? item.productId.photos[0] : [],
+        },
+      })),
+    };
+
+    return res.status(200).json(new ApiResponse(200, modifiedCart, "Cart found"));
   } catch (err) {
     console.error("Error while fetching cart : ", err);
-    throw new ApiError(500, `Something went wrong while fetching cart ${err.message}`);
+    throw new ApiError(
+      500,
+      `Something went wrong while fetching cart ${err.message}`
+    );
   }
 });
 
