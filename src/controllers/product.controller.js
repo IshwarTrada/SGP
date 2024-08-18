@@ -92,7 +92,7 @@ const addProduct = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, newlyCreatedProduct, "Product added"));
   } catch (err) {
     console.log(err);
-    throw new ApiError(500, "Something went wrong while adding new product");
+    throw new ApiError(500, `Something went wrong while adding new product ${err.message}`);
   }
 });
 
@@ -103,7 +103,7 @@ const showProduct = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, products, "Product found"));
   } catch (err) {
-    throw new ApiError(500, "Something went wrong while fetching products");
+    throw new ApiError(500, `Something went wrong while fetching products ${err.message}`);
   }
 });
 
@@ -120,7 +120,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, null, "Product deleted successfully"));
   } catch (err) {
-    throw new ApiError(500, "Something went wrong while deleting product");
+    throw new ApiError(500, `Something went wrong while deleting product ${err.message}`);
   }
 });
 
@@ -185,7 +185,7 @@ const updateProductData = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, updatedProduct, "Product updated"));
   } catch (err) {
-    throw new ApiError(500, "Something went wrong while updating product");
+    throw new ApiError(500, `Something went wrong while updating product  ${err.message}`);
   }
 });
 

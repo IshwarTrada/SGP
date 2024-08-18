@@ -22,7 +22,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(500, "Token generation failed");
+    throw new ApiError(500, `Token generation failed  ${err.message}`);
   }
 };
 
@@ -182,8 +182,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
           "Access token refreshed successfully"
         )
       );
-  } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid Refreh Token");
+  } catch (err) {
+    throw new ApiError(401, err?.message || "Invalid Refreh Token");
   }
 });
 

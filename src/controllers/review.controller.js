@@ -31,7 +31,7 @@ const createReview = asyncHandler(async (req, res) => {
       .status(201)
       .json(new ApiResponse(201, review, "Review created successfully"));
   } catch (err) {
-    console.error("Error while creating review:", err);
+    console.error(`Error while creating review: ${err.message}`);
     throw new ApiError(500, "Something went wrong while creating review");
   }
 });
@@ -57,7 +57,7 @@ const getReviews = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new ApiResponse(200, reviews, "Reviews found"));
   } catch (err) {
-    console.error("Error while fetching reviews : ", err);
+    console.error(`Error while fetching reviews : ${err.message}`);
     throw new ApiError(500, "Something went wrong while fetching reviews");
   }
 });
@@ -107,8 +107,7 @@ const updateReview = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, review, "Review updated"));
   } catch (err) {
-    console.error(err);
-    throw new ApiError(500, "Something went wrong while updating review");
+    throw new ApiError(500, `Something went wrong while updating review ${err.message}`);
   }
 });
 
@@ -134,7 +133,7 @@ const deleteReview = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, null, "Review deleted successfully"));
   } catch (err) {
     console.error("Error while deleting a review ", err);
-    throw new ApiError(500, "Something went wrong while deleting review");
+    throw new ApiError(500, `Something went wrong while deleting review ${err.message}`);
   }
 });
 

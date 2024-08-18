@@ -56,7 +56,7 @@ const createOrder = asyncHandler(async (req, res) => {
     console.error(err);
     throw new ApiError(
       500,
-      "Something went wrong while creating order :" + err
+      `Something went wrong while creating order : ${err}`
     );
   }
 });
@@ -89,7 +89,7 @@ const fetchPaymentDetails = asyncHandler(async (req, res) => {
   } catch (err) {
     throw new ApiError(
       500,
-      "Something went wrong while fetching payment details :" + err
+      `Something went wrong while fetching payment details : ${err}`
     );
   }
 });

@@ -80,7 +80,7 @@ const addToCart = asyncHandler(async (req, res) => {
     console.log(err);
     throw new ApiError(
       500,
-      "Something went wrong while adding product to cart"
+      `Something went wrong while adding product to cart ${err.message}`
     );
   }
 });
@@ -102,7 +102,7 @@ const getUserCart = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, cart, "Cart found"));
   } catch (err) {
     console.error("Error while fetching cart : ", err);
-    throw new ApiError(500, "Something went wrong while fetching cart");
+    throw new ApiError(500, `Something went wrong while fetching cart ${err.message}`);
   }
 });
 
@@ -149,11 +149,11 @@ const removeFromCart = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .json(new ApiResponse(200, null, "Product removed from cart"));
-  } catch (error) {
+  } catch (err) {
     console.error("Error while removing item from cart : ", error);
     throw new ApiError(
       500,
-      "Something went wrong while removing item from cart"
+      `Something went wrong while removing item from cart ${err.message}`
     );
   }
 });
