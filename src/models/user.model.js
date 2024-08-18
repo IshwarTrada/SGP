@@ -4,6 +4,15 @@ import jwt from "jsonwebtoken";
 // used for hashing password
 import bcrypt from "bcrypt";
 
+// Define schema for address
+const addressSchema = new Schema({
+  shippingAddress: String,
+  zip: String,
+  city: String,
+  state: String,
+  phone: String,
+});
+
 const userSchema = new Schema(
   {
     fname: {
@@ -35,6 +44,7 @@ const userSchema = new Schema(
       required: [true, "Password is required"],
       minlength: 8,
     },
+    address: [addressSchema],
     refreshToken: {
       type: String,
     },
