@@ -93,4 +93,12 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
+// Middleware to add prefix to phone number
+addressSchema.pre('save', function(next) {
+  if (this.phone && !this.phone.startsWith('+91')) {
+    this.phone = `+91${this.phone}`;
+  }
+  next();
+});
+
 export const User = mongoose.model("User", userSchema);

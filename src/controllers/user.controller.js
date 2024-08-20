@@ -103,8 +103,9 @@ const loginUser = asyncHandler(async (req, res) => {
     user._id
   );
 
-  const loggedInUser = await User.findById(user._id)
-    .select("-password -address -refreshToken -updatedAt -__v");
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -address -refreshToken -updatedAt -__v"
+  );
 
   return res
     .status(200)
@@ -186,4 +187,84 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken };
+const getUserProfile = asyncHandler(async (req, res) => {
+  try {
+    // Step 1: Get user from database
+    const user = await User.findById(req.user._id).select(
+      "-password -refreshToken"
+    );
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "User profile fetched successfully"));
+  } catch (err) {
+    throw new ApiError(
+      500,
+      `Something went wrong while fetching user profile ${err.message}`
+    );
+  }
+});
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+  try {
+    // Extract user details from request
+    const { fname, lname, shippingAddress, zip, city, state, phone } = req.body;
+
+    // Validate required fields
+    if ([fname, lname].some((field) => field?.trim() === "")) {
+      throw new ApiError(400, "First name and last name are required");
+    }
+
+    // Find user by ID
+    const user = await User.findById(req.user._id).select(
+      "-password -refreshToken"
+    );
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    // Apply updates
+    if (fname) user.fname = fname;
+    if (lname) user.lname = lname;
+    if (shippingAddress || zip || city || state || phone) {
+      // Check if phone number has a prefix
+      const phoneWithPrefix =
+        phone && !phone.startsWith("+91") ? `+91${phone}` : phone;
+
+      // Update the address field
+      user.address = [
+        {
+          shippingAddress: shippingAddress || user.address[0]?.shippingAddress,
+          zip: zip || user.address[0]?.zip,
+          city: city || user.address[0]?.city,
+          state: state || user.address[0]?.state,
+          phone: phoneWithPrefix || user.address[0]?.phone,
+        },
+      ];
+    }
+
+    // Save the updated user document
+    const updatedUser = await user.save();
+
+    // Send successful response
+    return res
+      .status(200)
+      .json(new ApiResponse(200, updatedUser, "User updated successfully"));
+  } catch (err) {
+    // Handle errors
+    throw new ApiError(
+      500,
+      `Something went wrong while updating user profile ${err.message}`
+    );
+  }
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  getUserProfile,
+  updateUserProfile,
+};
