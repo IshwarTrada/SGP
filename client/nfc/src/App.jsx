@@ -12,6 +12,9 @@ import Analytics from "./pages/Analytics.jsx";
 import Settings from './pages/Settings.jsx';
 import Products from "./pages/Products.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import ShowCart from "./pages/ShowCart.jsx";
+import Checkout from "./pages/Checkout.jsx";
+import CheckOutPage from "./pages/CheckOutPage.jsx";
 
 
 function App() {
@@ -21,15 +24,16 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route path="/landingpage" element={<LandingPage/>}/>
+          <Route path="/" element={<ShowCart />}>
+          {/* <Route path="/" element={<Home />}> */}
+            {/* <Route path="/landingpage" element={<LandingPage/>}/>
             <Route path="/dashboard" element={<LandingPage/>} />
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<Products />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signIn" element={<SignIn />} />
-            <Route path="/cartpage" element={<CartPage />} />
+            <Route path="/cartpage" element={<CartPage />} /> */}
           </Route>
 
 
