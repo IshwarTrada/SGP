@@ -82,10 +82,10 @@ function Signup() {
         style={{ backgroundImage: 'url("./src/assets/Backimage.jpg")' }}
       >
         <div className="flex justify-center items-center h-[inherit]">
-          <div className="bg-[#fefefe] w-120 p-[0.9rem] rounded-2xl shadow-[rgba(0,0,0,0.35)_0px_5px_15px]">
-            <div className="bg-[#ffffff] p-5 border-[1px] border-black rounded-2xl shadow-sm">
-              <h1 className="text-center text-3xl font-black mb-2">Register</h1>
-              <p className="text-center text-xl pb-6">
+          <div className="bg-[#fefefe] w-[425px] p-[0.7rem] rounded-2xl shadow-[rgba(0,0,0,0.35)_0px_5px_15px]">
+            <div className="bg-[#ffffff] p-5 border-[1px] border-black rounded-2xl shadow-sm h-full">
+              <h1 className="text-center text-xl font-black mb-2">Register</h1>
+              <p className="text-center pb-6">
                 to <strong>"Connect with the Future"</strong>
               </p>
               {error && <p className="text-red-500 text-center mb-3">{error}</p>}
@@ -95,13 +95,13 @@ function Signup() {
               <form onSubmit={handleSubmit}>
                 <div className="flex">
                   <div className="w-1/2 pr-2">
-                    <label htmlFor="firstName" className="block mb-1 ml-[1px]">
+                    <label htmlFor="firstName" className="block mb-1 ml-[1px] text-[0.9rem]">
                       First name
                     </label>
                     <input
                       type="text"
                       id="firstName"
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border border-gray-300 rounded-md text-[0.9rem]"
                       placeholder="i.e. John"
                       value={formData.firstName}
                       onChange={handleChange}
@@ -109,13 +109,13 @@ function Signup() {
                     />
                   </div>
                   <div className="w-1/2 pl-2">
-                    <label htmlFor="lastName" className="block mb-1 ml-[1px]">
+                    <label htmlFor="lastName" className="block mb-1 ml-[1px] text-[0.9rem]">
                       Last name
                     </label>
                     <input
                       type="text"
                       id="lastName"
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border border-gray-300 rounded-md  text-[0.9rem]"
                       placeholder="i.e. Doe"
                       value={formData.lastName}
                       onChange={handleChange}
@@ -124,13 +124,13 @@ function Signup() {
                   </div>
                 </div>
                 <div className="mt-2">
-                  <label htmlFor="email" className="block mb-1 ml-[1px]">
+                  <label htmlFor="email" className="block mb-1 ml-[1px]  text-[0.9rem]">
                     E-mail
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md  text-[0.9rem]"
                     placeholder="Enter email"
                     value={formData.email}
                     onChange={handleChange}
@@ -138,13 +138,13 @@ function Signup() {
                   />
                 </div>
                 <div className="mt-2">
-                  <label htmlFor="password" className="block mb-1 ml-[1px]">
+                  <label htmlFor="password" className="block mb-1 ml-[1px]  text-[0.9rem]">
                     Password
                   </label>
                   <input
                     type="password"
                     id="password"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md text-[0.9rem]"
                     placeholder="Enter password"
                     value={formData.password}
                     onChange={handleChange}
@@ -154,14 +154,14 @@ function Signup() {
                 <div className="mt-2">
                   <label
                     htmlFor="confirmPassword"
-                    className="block mb-1 ml-[1px]"
+                    className="block mb-1 ml-[1px]  text-[0.9rem]"
                   >
                     Confirm Password
                   </label>
                   <input
                     type="password"
                     id="confirmPassword"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md text-[0.9rem]"
                     placeholder="Re-enter password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
@@ -170,7 +170,7 @@ function Signup() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-4 bg-black text-white p-2 rounded-md"
+                  className="w-full mt-4 bg-black text-white p-2 rounded-md text-[0.9rem]"
                 >
                   Register
                 </button>

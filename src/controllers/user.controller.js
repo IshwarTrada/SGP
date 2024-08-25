@@ -110,12 +110,14 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // Step 2: Validation - check for empty fields
   if ([email, password].some((field) => field?.trim() === "")) {
+    res.status(400).json(new ApiResponse(400, null, "email and password both are required"));
     throw new ApiError(400, "email and password are required");
   }
 
   // Step 3: Check if user exists by email
   const user = await User.findOne({ email });
   if (!user) {
+    res.status(404).json(new ApiResponse(404, null, "User not found"));
     throw new ApiError(404, "User not found");
   }
 
@@ -123,6 +125,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const isMatch = await user.isPasswordCorrect(password);
 
   if (!isMatch) {
+    res.status(401).json(new ApiResponse(401, null, "Incorrect password"));
     throw new ApiError(401, "Incorrect password");
   }
 
