@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
-// import Navi from "../components/Navbar.jsx"; // Uncomment if needed
-// import StaticFooter from '../components/Staticfooter.jsx'; // Uncomment if needed
+import Navi from "../components/Navbar.jsx"; // Uncomment if needed
+import StaticFooter from '../components/Staticfooter.jsx'; // Uncomment if needed
 
 const API = "http://localhost:3000/api/v1/users/register";
 
@@ -76,12 +76,12 @@ function Signup() {
 
   return (
     <>
-      {/* <Navi /> */}
+      <Navi />
       <div
-        className="pd-12 bg-cover w-[100%]"
+        className="h-screen bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: 'url("./src/assets/Backimage.jpg")' }}
       >
-        <div className="flex justify-center pb-10 pt-[6rem]">
+        <div className="flex justify-center items-center h-[inherit]">
           <div className="bg-[#fefefe] w-120 p-[0.9rem] rounded-2xl shadow-[rgba(0,0,0,0.35)_0px_5px_15px]">
             <div className="bg-[#ffffff] p-5 border-[1px] border-black rounded-2xl shadow-sm">
               <h1 className="text-center text-3xl font-black mb-2">Register</h1>
@@ -196,7 +196,7 @@ function Signup() {
           </div>
         </div>
       </div>
-      {/* <div className=""><StaticFooter/></div> */}
+      <div className=""><StaticFooter/></div>
     </>
   );
 }

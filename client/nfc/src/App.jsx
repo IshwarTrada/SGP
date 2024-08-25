@@ -19,10 +19,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/" element={<ShowCart />} />
           {/* <Route path="/" element={<Home />}> */}
           {/* <Route path="/landingpage" element={<LandingPage/>}/>
-          <Route path="/" element={<ShowCart />} />
             <Route path="/dashboard" element={<LandingPage/>} />
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<Products />} />
