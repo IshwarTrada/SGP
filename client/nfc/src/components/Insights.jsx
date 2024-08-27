@@ -2,9 +2,9 @@ import React from 'react';
 
 const Insights = () => {
      return (
-          <div className="bg-gray-200 w-auto"> 
-          <h1 className="text-5xl text-center pt-20"><strong>What our customers said about us!!!</strong></h1>
-               <div className="w-[1250px] h-[940px] flex items-center justify-center ml-[3.5rem] mr-1 text-justify">
+          <div className="bg-gray-200 w-auto p-10"> 
+          <h1 className="text-5xl text-center"><strong>What our customers said about us!!!</strong></h1>
+               <div className="flex items-center justify-center m-10 text-justify">
                    
                     <div className="transform scale-90 md:scale-70 lg:scale-100 m-4 grid gap-5 grid-rows-2 grid-cols-4">
 

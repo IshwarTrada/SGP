@@ -35,7 +35,7 @@ const NFCProducts = () => {
                </p>
                <h1 className="text-5xl mb-16 mt-6"><strong>Explore Our NFC Card Products</strong></h1>
 
-               <div className="flex justify-center gap-12 flex-nowrap pr-20">
+               <div className="flex justify-center gap-12 flex-nowrap">
                     {products.map((product) => (
                          <div
                               key={product.id}
@@ -76,7 +76,7 @@ const NFCProducts = () => {
                          </div>
                     ))}
 
-                    <div className="absolute right-5 mt-[40px]">
+                    <div className="absolute right-5 mt-[40px] mr-[50px]">
                          <Link to="/products"><div className="w-24 h-24 rounded-full bg-gray-300 flex justify-center items-center cursor-pointer">
                               <div
                                    className="w-12 h-12"
