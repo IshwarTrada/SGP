@@ -24,17 +24,23 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/" element={<ShowCart />}>
-          {/* <Route path="/" element={<Home />}> */}
-            {/* <Route path="/landingpage" element={<LandingPage/>}/>
+          <Route path="/" element={<Home />}>
+            <Route path="/landingpage" element={<LandingPage/>}/>
             <Route path="/dashboard" element={<LandingPage/>} />
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<Products />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signIn" element={<SignIn />} />
-            <Route path="/cartpage" element={<CartPage />} /> */}
+            <Route path="/showCart" element={<ShowCart />} />
+            <Route path="/checkoutPage" element={<CheckOutPage />} />
+            <Route path="/placeorder" element={<Checkout />} />
           </Route>
+          {/* <Route path="/cart" element={<CartPage/>}>
+            <Route path="/cart" element={<ShowCart/>} />
+            <Route/>
+            <Route/>
+          </Route> */}
 
 
 

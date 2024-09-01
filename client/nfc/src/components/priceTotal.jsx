@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function PriceTotal() {
   const subtotal = 320;
@@ -33,9 +34,11 @@ function PriceTotal() {
           <span className="font-semibold">Rs.{total.toFixed(2)}</span>
         </div>
       </div>
+      <Link to={"/checkoutPage"}>
       <button className="w-full mt-4 py-3 bg-[#080808] text-white rounded-md font-bold">
         PROCEED TO CHECKOUT 
       </button>
+      </Link>
     </div>
   </>
   );

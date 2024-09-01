@@ -1,26 +1,13 @@
+import { Outlet } from "react-router-dom";
+import Navi from "../components/Navbar";
+import StaticFooter from "../components/Staticfooter";
+
 function CartPage() {
      return (
           <>
-          <div>
-               <h1 className="mt-10">CART</h1>
-               <h1>CART</h1>
-
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-               <h1>CART</h1>
-
-          </div>
+          <Navi/>
+          <Outlet/>
+          <StaticFooter/>
           </>
      )
 }

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 import React, { useState } from 'react';
-import StaticFooter from '../components/Staticfooter';
 import Navi from '../components/Navbar';
 import Signup from "./SignUp";
 

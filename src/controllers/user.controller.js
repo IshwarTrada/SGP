@@ -205,6 +205,20 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const getUser = asyncHandler(async (req,res)=>{
+  try{
+    const user = await User.find();
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "All User profile fetched successfully"));
+  }catch(err){
+    throw new ApiError(
+      500,
+      `Something went wrong while fetching user profile ${err.message}`
+    );
+  }
+})
+
 const updateUserProfile = asyncHandler(async (req, res) => {
   try {
     // Extract user details from request
@@ -267,4 +281,5 @@ export {
   refreshAccessToken,
   getUserProfile,
   updateUserProfile,
+  getUser
 };

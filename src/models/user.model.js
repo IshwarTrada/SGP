@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 // used for hashing password
 import bcrypt from "bcrypt";
 
-<<<<<<< HEAD
 // Define schema for address
 const addressSchema = new Schema({
   shippingAddress: String,
@@ -14,8 +13,6 @@ const addressSchema = new Schema({
   phone: String,
 });
 
-=======
->>>>>>> 4ed7e30 (homepage)
 const userSchema = new Schema(
   {
     fname: {
@@ -47,10 +44,7 @@ const userSchema = new Schema(
       required: [true, "Password is required"],
       minlength: 8,
     },
-<<<<<<< HEAD
     address: [addressSchema],
-=======
->>>>>>> 4ed7e30 (homepage)
     refreshToken: {
       type: String,
     },
@@ -99,7 +93,6 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-<<<<<<< HEAD
 // Middleware to add prefix to phone number
 addressSchema.pre('save', function(next) {
   if (this.phone && !this.phone.startsWith('+91')) {
@@ -108,6 +101,4 @@ addressSchema.pre('save', function(next) {
   next();
 });
 
-=======
->>>>>>> 4ed7e30 (homepage)
 export const User = mongoose.model("User", userSchema);

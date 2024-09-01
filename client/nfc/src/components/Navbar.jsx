@@ -75,7 +75,7 @@ function Navi() {
                     </div>
                     <div className="relative mr-1">
                          <span className="absolute -top-2 -right-2 text-white rounded-full text-xs w-[1.5rem] h-4 flex items-center mr-1">
-                              <Link to="/cartpage">
+                              <Link to="/showCart">
                                    <img src={cartIcon} alt="Cart Icon" width="30" height="30" className="transition-transform 
                                    transform hover:scale-110 hover:filter hover:brightness-0 hover:invert hover:sepia hover:hue-rotate-[180deg] hover:saturate-[200%]" />
                               </Link>

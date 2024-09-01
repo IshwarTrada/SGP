@@ -6,6 +6,7 @@ import {
   refreshAccessToken,
   getUserProfile,
   updateUserProfile,
+  getUser
 } from "../controllers/user.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 
@@ -21,6 +22,7 @@ router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/refresh-token").post(refreshAccessToken);
 
 router.route("/profile").get(verifyJwt, getUserProfile);
+router.route("/getusers").get(getUser);
 
 router.route("/update-profile").patch(verifyJwt, updateUserProfile);
 
