@@ -1,24 +1,42 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+const API = "http://localhost:3000/api/v1/products/showProduct";
 
 const NFCProducts = () => {
-  const productAPI = "http://localhost:3000/api/v1/products/showProduct";
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
-  const findProduct = async () => {
-   try {
-     const response = await axios.get(productAPI);
-     setProducts(response.data.data);
-     // console.log(response.data.data);
-   } catch (error) {
-     console.log("ERROR AT PRODUCT API")
-   }
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(API);
+        const result = await res.json();
 
-  useEffect(()=>{
-     findProduct();
-  },[])
+        if (res.ok && result.success) {
+          // Sorting by createdAt to get the most recent products
+          const sortedProducts = result.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          const recentProducts = sortedProducts.slice(0, 3); // Get top 3 products
+          setProducts(recentProducts);
+        } else {
+          setError(result.message || "Failed to fetch products.");
+        }
+      } catch (error) {
+        setError("Failed to fetch products.");
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="bg-gray-100 p-16 text-center">
       <p className="text-2xl font-light mb-0">
@@ -28,7 +46,7 @@ const NFCProducts = () => {
         <strong>Explore Our NFC Card Products</strong>
       </h1>
 
-      <div className="flex justify-center gap-12 flex-nowrap pr-20">
+      <div className="flex justify-center gap-12 flex-nowrap">
         {products.map((product) => (
           <div
             key={product._id}
@@ -37,6 +55,7 @@ const NFCProducts = () => {
             <Link to="/products">
               <img
                 src={product.photos}
+                alt={product.productName}
                 className="w-full h-48 object-cover rounded-xl border-[2px] border-black"
                 // style={{
                 //      background:
@@ -62,18 +81,18 @@ const NFCProducts = () => {
             </Link>
 
             <div className="text-center mt-4">
-              <div className="text-xl font-bold">{product.title}</div>
+              <div className="text-xl font-bold">{product.productName}</div>
               <div className="text-lg text-gray-900 mt-2">
-                {product.discountPrice}{" "}
+                {parseFloat(product.discountPrice).toFixed(2)+"/-"}{" "}
                 <span className="line-through text-gray-500 pl-2">
-                  {product.shownPrice}
+                  {parseFloat(product.shownPrice).toFixed(2)+"/-"}
                 </span>
               </div>
             </div>
           </div>
         ))}
 
-        <div className="absolute right-5 mt-[40px]">
+        <div className="absolute right-5 mt-[40px] mr-[50px]">
           <Link to="/products">
             <div className="w-24 h-24 rounded-full bg-gray-300 flex justify-center items-center cursor-pointer">
               <div

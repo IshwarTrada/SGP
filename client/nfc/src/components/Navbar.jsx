@@ -19,18 +19,18 @@ function Navi() {
      ];
 
      return (
-          <div className="bg-black h-16 flex items-center justify-between px-4 fixed w-[100%] mb-1 z-50">
-               <div>
+          <div className="bg-black h-14 flex items-center justify-between pl-[1rem] pr-[0rem] fixed w-[100%] mb-1 z-50 text-sm">
+               <div className="w-20 mr-[15px]">
                     <Link to="/landingpage">
                          <img
-                              className="w-18 h-16"
+                              className=""
                               id="logo"
                               alt="logo"
                               src="./src/assets/logo.png"
                          />
                     </Link>
                </div>
-               <div className="flex gap-16 mr-[15rem] text-[#cfd1d4]">
+               <div className="flex gap-16 mr-[10rem] text-[#cfd1d4]">
                     <ul className="flex gap-8">
                          {navItems.map((item, index) => (
                               <li
@@ -40,7 +40,7 @@ function Navi() {
                                    <Link to={item.path}>
                                         {item.name}
                                    </Link>
-                                   {item.name === "Products" && (
+                                   {item.name === "Analytics" && (
                                         <>
                                              <span className={`ml-1 transform transition-transform ${activeItem === item.name ? 'rotate-180' : ''}`}>
                                                   <svg
@@ -59,7 +59,7 @@ function Navi() {
                                                   </svg>
                                              </span>
                                              {activeItem === "Analytics" && (
-                                                  <div className="absolute top-[100%]">
+                                                  <div className="absolute top-[100%] left-0">
                                                        <Dropdown />
                                                   </div>
                                              )}
@@ -69,17 +69,25 @@ function Navi() {
                          ))}
                     </ul>
                </div>
-               <div className="flex items-center gap-4">
-                    <div className="relative mr-[1.30rem]">
+
+               <div className="items-center mr-4 relative flex flex-row">
+                    <div className="flex flex-row gap-6">
                          <SearchBar />
-                    </div>
-                    <div className="relative mr-1">
-                         <span className="absolute -top-2 -right-2 text-white rounded-full text-xs w-[1.5rem] h-4 flex items-center mr-1">
-                              <Link to="/showCart">
-                                   <img src={cartIcon} alt="Cart Icon" width="30" height="30" className="transition-transform 
-                                   transform hover:scale-110 hover:filter hover:brightness-0 hover:invert hover:sepia hover:hue-rotate-[180deg] hover:saturate-[200%]" />
-                              </Link>
-                         </span>
+                         <div className="flex flex-row justify-center items-center gap-6">
+                              {/* <span className="relative -top-2 -right-2 text-white rounded-full text-xs w-[1.5rem] h-4 flex items-right mr-1"> */}
+                                   <Link to="/cartpage">
+                                        <img src={cartIcon} alt="Cart Icon" className="w-[20px] transition-transform 
+                            transform hover:scale-110 hover:filter hover:brightness-0 hover:invert hover:sepia hover:hue-rotate-[180deg] hover:saturate-[200%]" />
+                                   </Link>
+                                   {/* </span> */}
+                              {/* <span> */}
+                                  <Link to="/signIn">
+                                        <img src="./src/assets/profileimage.png" alt="Cart Icon" className="w-[16px] transition-transform 
+                            transform hover:scale-110 hover:filter hover:brightness-0 hover:invert hover:sepia hover:hue-rotate-[180deg] hover:saturate-[200%]" />
+                                   </Link>
+                              {/* </span> */}
+
+                         </div>
                     </div>
                </div>
           </div>

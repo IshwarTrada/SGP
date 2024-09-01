@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchBar = () => {
   return (
-    <div className="flex justify-center items-center mt-[0rem]">
+    <div className="flex justify-center items-center mt-[0rem] text-sm">
       <div className="relative w-full max-w-xs">
         <input
           type="text"

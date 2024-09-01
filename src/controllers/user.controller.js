@@ -27,53 +27,81 @@ const generateAccessAndRefreshToken = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  // Step 1: Get user details from frontend
-  const { fname, lname, email, password, confirmPassword } = req.body;
+  try {
+    // Step 1: Get user details from frontend
+    const { fname, lname, email, password, confirmPassword } = req.body;
 
-  // Step 2: Validation - check for empty fields
-  if (
-    [fname, lname, email, password, confirmPassword].some(
-      (field) => field?.trim() === ""
-    )
-  ) {
-    throw new ApiError(400, "All fields are required");
-  }
+    // Step 2: Validation - check for empty fields
+    if (
+      [fname, lname, email, password, confirmPassword].some(
+        (field) => field?.trim() === ""
+      )
+    ) {
+      res
+        .status(400)
+        .json(new ApiResponse(400, null, "All fields are required"));
+      throw new ApiError(400, "All fields are required");
+    }
 
-  // Step 3: Check if passwords match
-  if (password !== confirmPassword) {
+    // Step 3: Check if passwords match
+    if (password !== confirmPassword) {
+      res
+        .status(400)
+        .json(new ApiResponse(400, null, "Passwords do not match."));
+      throw new ApiError(400, "Passwords do not match");
+    }
+
+    // Step 4: Check if user exists by email
+    const existedUser = await User.findOne({ email });
+    if (existedUser) {
+      res
+        .status(409)
+        .json(new ApiResponse(409, null, "User already exists"));
+      throw new ApiError(409, "User already exists");
+    }
+
+    // Step 5: Create user object
+    const newUser = await User.create({
+      fname,
+      lname,
+      email,
+      password,
+    });
+
+    // Step 6: Remove sensitive information from response
+    const createdUser = await User.findById(newUser._id)
+      .select("-fname -lname -password -address -refreshToken -updatedAt -__v") // Exclude sensitive fields
+      .lean();
+
+    // Step 7: Check for user creation
+    if (!createdUser) {
+      return res
+        .status(500)
+        .json(new ApiResponse(500, null, "User creation failed"));
+    }
+
+    // Step 8: Send success response
     return res
-      .status(400)
-      .json(new ApiResponse(400, null, "Passwords do not match."));
+      .status(201)
+      .json(new ApiResponse(200, createdUser, "User registered successfully"));
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      // Extract validation error messages
+      const messages = Object.values(err.errors).map((error) => error.message);
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, messages.join(", ")));
+    }
+    return res
+      .status(500)
+      .json(
+        new ApiResponse(
+          500,
+          null,
+          `Something went wrong while registering user ${error.message}`
+        )
+      );
   }
-
-  // Step 4: Check if user exists by email
-  const existedUser = await User.findOne({ email });
-  if (existedUser) {
-    throw new ApiError(409, "User already exists");
-  }
-
-  // Step 5: Create user object
-  const newUser = await User.create({
-    fname,
-    lname,
-    email,
-    password,
-  });
-
-  // Step 6: Remove sensitive information from response
-  const createdUser = await User.findById(newUser._id)
-    .select("-fname -lname -password -address -refreshToken -updatedAt -__v") // Exclude sensitive fields
-    .lean();
-
-  // Step 7: Check for user creation
-  if (!createdUser) {
-    throw new ApiError(500, "User creation failed");
-  }
-
-  // Step 8: Send success response
-  return res
-    .status(201)
-    .json(new ApiResponse(200, createdUser, "User registered successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -82,12 +110,14 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // Step 2: Validation - check for empty fields
   if ([email, password].some((field) => field?.trim() === "")) {
+    res.status(400).json(new ApiResponse(400, null, "email and password both are required"));
     throw new ApiError(400, "email and password are required");
   }
 
   // Step 3: Check if user exists by email
   const user = await User.findOne({ email });
   if (!user) {
+    res.status(404).json(new ApiResponse(404, null, "User not found"));
     throw new ApiError(404, "User not found");
   }
 
@@ -95,6 +125,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const isMatch = await user.isPasswordCorrect(password);
 
   if (!isMatch) {
+    res.status(401).json(new ApiResponse(401, null, "Incorrect password"));
     throw new ApiError(401, "Incorrect password");
   }
 
