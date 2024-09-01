@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
@@ -47,7 +46,7 @@ const NFCProducts = () => {
       </h1>
 
       <div className="flex justify-center gap-12 flex-nowrap">
-        {products.map((product) => (
+        {products.slice(0, 4).map((product) => (
           <div
             key={product._id}
             className="relative w-80 mx-2 rounded-lg bg-gray-100 cursor-pointer overflow-hidden"

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Navi from "../components/Navbar.jsx"; // Uncomment if needed
 import StaticFooter from '../components/Staticfooter.jsx'; // Uncomment if needed
@@ -6,6 +6,8 @@ import StaticFooter from '../components/Staticfooter.jsx'; // Uncomment if neede
 const API = "http://localhost:3000/api/v1/users/register";
 
 function Signup() {
+  const navigate = useNavigate();  // Initialize useNavigate hook
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -42,6 +44,9 @@ function Signup() {
         password: "",
         confirmPassword: "",
       });
+      setTimeout(() => {
+        navigate("/signin");  // Redirect to the login page
+      }, 1500);
     } else {
       setError(response.message || "Registration failed.");
     }

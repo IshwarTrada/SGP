@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import React, { useState } from "react";
 import StaticFooter from "../components/Staticfooter";
@@ -8,6 +8,8 @@ import Signup from "./SignUp";
 const API = "http://localhost:3000/api/v1/users/sign-in";
 
 function SignIn() {
+  const navigate = useNavigate();  // Initialize useNavigate hook
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -38,6 +40,9 @@ function SignIn() {
           email: "",
           password: "",
         });
+        setTimeout(() => {
+          navigate("/");  // Redirect to the login page
+        }, 1500);
       } else {
         setError(response.message || "Registration failed.");
       }
@@ -57,7 +62,7 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("Form submitted:", formData);
-
+    
     loggedInUser(formData);
   };
 
@@ -143,7 +148,7 @@ function SignIn() {
               </button>
               <p className="text-center mt-4 text-sm text-[#7d7d7d]">
                 Don’t have an Account?{" "}
-                <Link to="/" className="text-black">
+                <Link to="/signup" className="text-black">
                   <strong>Register</strong>
                 </Link>
               </p>
