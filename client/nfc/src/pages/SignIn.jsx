@@ -28,6 +28,7 @@ function SignIn() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       const response = await res.json();

@@ -7,7 +7,8 @@ import jwt from "jsonwebtoken";
 // to make cookie unchanged by the browser/clientside
 const options = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
 };
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -54,9 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // Step 4: Check if user exists by email
     const existedUser = await User.findOne({ email });
     if (existedUser) {
-      res
-        .status(409)
-        .json(new ApiResponse(409, null, "User already exists"));
+      res.status(409).json(new ApiResponse(409, null, "User already exists"));
       throw new ApiError(409, "User already exists");
     }
 
@@ -110,7 +109,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // Step 2: Validation - check for empty fields
   if ([email, password].some((field) => field?.trim() === "")) {
-    res.status(400).json(new ApiResponse(400, null, "email and password both are required"));
+    res
+      .status(400)
+      .json(new ApiResponse(400, null, "email and password both are required"));
     throw new ApiError(400, "email and password are required");
   }
 
