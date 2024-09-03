@@ -2,18 +2,21 @@ import React, { useEffect } from "react";
 import CartTotal from "../components/CartTotal";
 import ShoppingCart from "../components/ShoppingCart";
 import Navi from "../components/Navbar";
-import Staticfooter from "../components/Staticfooter"
+import Staticfooter from "../components/Staticfooter";
 
+const API = "http://localhost:3000/api/v1/cart/getCart";
 
 function ShowCart() {
-  
+
   return (
     <>
-      <div className="pt-24 p-14  flex gap-1">
+      <Navi />
 
-        <ShoppingCart/>
-        <CartTotal/>
+      <div className="pt-24 p-14  flex gap-1">
+        <ShoppingCart />
+        <CartTotal />
       </div>
+      <Staticfooter />
     </>
   );
 }
