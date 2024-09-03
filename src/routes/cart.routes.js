@@ -5,7 +5,7 @@ import { addToCart, getUserCart ,removeFromCart} from "../controllers/cart.contr
 const router = Router();
 
 router.route("/addCart/:productId").post(verifyJwt, addToCart);
-router.route("/getCart/:_id").get(verifyJwt, getUserCart);
+router.route("/getCart").get(verifyJwt, getUserCart);
 router.route("/removeCart/:productId").delete(verifyJwt, removeFromCart);
 
 export default router;

@@ -17,7 +17,6 @@ app.use(
     credentials: true,
   })
 );
-
 // Accept JSON files
 app.use(express.json({ limit: "16kb" }));
 // Data came in the form of URL-encoded form data

@@ -2,19 +2,32 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios"
 
+const API = "http://localhost:3000/api/v1/cart/getCart";
 
 function ShoppingCart() {
-//   const [cartItems, setCartItems] = useState([]);
-//   const cartAPI = "http://localhost:3000/api/v1/products/showProduct"
+  const [cartItems, setCartItems] = useState([]);
 
-//   const fetchCartItems = async()=>{
-//     const response = await axios.get(cartAPI)
-//     console.log(response.data.data)
-//   }
 
-// useEffect(()=>{
-//   fetchCartItems();
-// })
+
+const fetchCarts = async()=>{
+  try {
+    console.log("START")
+    const response = await axios.get(API);
+    console.log("END")
+
+    console.log(response)
+    const data = await response.json();
+    console.log(data);
+    
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+useEffect(()=>{
+  fetchCarts();
+},[])
+
 
 
   const [items, setItems] = useState([

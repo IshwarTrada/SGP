@@ -21,7 +21,7 @@ function Navi() {
      return (
           <div className="bg-black h-14 flex items-center justify-between pl-[1rem] pr-[0rem] fixed w-[100%] mb-1 z-50 text-sm">
                <div className="w-20 mr-[15px]">
-                    <Link to="/landingpage">
+                    <Link to="/">
                          <img
                               className=""
                               id="logo"
@@ -75,7 +75,7 @@ function Navi() {
                          <SearchBar />
                          <div className="flex flex-row justify-center items-center gap-6">
                               {/* <span className="relative -top-2 -right-2 text-white rounded-full text-xs w-[1.5rem] h-4 flex items-right mr-1"> */}
-                                   <Link to="/cartpage">
+                                   <Link to="/cart">
                                         <img src={cartIcon} alt="Cart Icon" className="w-[20px] transition-transform 
                             transform hover:scale-110 hover:filter hover:brightness-0 hover:invert hover:sepia hover:hue-rotate-[180deg] hover:saturate-[200%]" />
                                    </Link>
