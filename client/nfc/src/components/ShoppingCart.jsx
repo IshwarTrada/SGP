@@ -10,31 +10,6 @@ const ShoppingCart = ({
   fetchCarts,
   setQuantityChanged,
 }) => {
-  // const [cartItems, setCartItems] = useState([]);
-
-  // const fetchCarts = async () => {
-  //   try {
-  //     const response = await fetch(API, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include", // If you need to include cookies
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(Array.isArray(data.data?.items));
-  //       console.log("DATA:--", data.data);
-  //       setCartItems(data.data);
-  //       console.log("ITEM", cartItems);
-  //     } else {
-  //       console.error("Failed to fetch cart items:", response.statusText);
-  //     }
-  //   } catch (e) {
-  //     console.error("Error fetching cart items:", e);
-  //   }
-  // };
   const updateQuantity = async (id, newQuantity) => {
     try {
       console.log("ID", id);
@@ -52,6 +27,7 @@ const ShoppingCart = ({
 
       if (response.ok) {
         console.log("Cart item updated successfully");
+        fetchCarts();
       } else {
         console.error("Failed to update cart item:", response.statusText);
       }
@@ -70,8 +46,7 @@ const ShoppingCart = ({
     });
 
     setCartItems(updatedCartItems);
-    updateQuantity(id, newQuantity);
-    setQuantityChanged(true)
+    // updateQuantity(id, newQuantity);
   };
 
   const incrementQuantity = (id) => {
@@ -92,9 +67,8 @@ const ShoppingCart = ({
       : item
     );
     
-    setQuantityChanged(true); // Set flag to trigger fetch
     setCartItems(updatedCartItems);
-    updateQuantity(id, newQuantity);
+    // updateQuantity(id, newQuantity);
     }
   };
 
@@ -118,7 +92,7 @@ const ShoppingCart = ({
 
       setCartItems(updatedCartItems);
 
-      updateQuantity(id, newQuantity);
+      // updateQuantity(id, newQuantity);
     }
   };
 
@@ -192,7 +166,10 @@ const ShoppingCart = ({
                   </span>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <button className="border border-[#807E7D] rounded text-[#807E7D] px-4 py-2 text-sm font-semibold" onClick={()=> fetchCarts() }>
+                  <button className="border border-[#807E7D] rounded text-[#807E7D] px-4 py-2 text-sm font-semibold"
+                  onClick={()=>{
+                    updateQuantity(item.productId._id, item.quantity)
+                  }} >
                     UPDATE
                   </button>
                   <button className="text-gray-400">✖</button>
