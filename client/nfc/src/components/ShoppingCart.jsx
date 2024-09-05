@@ -2,85 +2,135 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API = "http://localhost:3000/api/v1/cart/getCart";
+// const API = "http://localhost:3000/api/v1/cart/getCart";
+const changeQuantityAPI = "http://localhost:3000/api/v1/cart/addCart";
+const ShoppingCart = ({
+  cartItems,
+  setCartItems,
+  fetchCarts,
+  setQuantityChanged,
+}) => {
+  // const [cartItems, setCartItems] = useState([]);
 
-function ShoppingCart() {
-  const fetchCarts = async () => {
+  // const fetchCarts = async () => {
+  //   try {
+  //     const response = await fetch(API, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include", // If you need to include cookies
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(Array.isArray(data.data?.items));
+  //       console.log("DATA:--", data.data);
+  //       setCartItems(data.data);
+  //       console.log("ITEM", cartItems);
+  //     } else {
+  //       console.error("Failed to fetch cart items:", response.statusText);
+  //     }
+  //   } catch (e) {
+  //     console.error("Error fetching cart items:", e);
+  //   }
+  // };
+  const updateQuantity = async (id, newQuantity) => {
     try {
-      console.log("START");
-      const response = await fetch(API, {
-        method: "GET",
+      console.log("ID", id);
+      console.log(`UPDATE apI:-- ${changeQuantityAPI}/${id}`);
+      const response = await fetch(`${changeQuantityAPI}/${id}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // If you need to include cookies
+        credentials: "include",
+        body: JSON.stringify({
+          quantity: newQuantity,
+        }),
       });
-      console.log("END");
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        console.log("Cart item updated successfully");
       } else {
-        console.error("Failed to fetch cart items:", response.statusText);
+        console.error("Failed to update cart item:", response.statusText);
       }
     } catch (e) {
-      console.error("Error fetching cart items:", e);
+      console.error("Error Updating cart items:", e);
     }
   };
-  useEffect(() => {
-    fetchCarts();
-  }, []);
-
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "LGBBQ+ Nfc card",
-      price: 70,
-      originalPrice: 60,
-      quantity: 1,
-      image: "../../assets/img1.png",
-    },
-    {
-      id: 2,
-      name: "LGBBQ+ Nfc card",
-      price: 70,
-      originalPrice: 60,
-      quantity: 1,
-      image: "../../assets/img1.png",
-    },
-  ]); // Add state for product quantity
 
   const handleQuantityChange = (id, newQuantity) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    if (newQuantity < 1) return;
+
+    const updatedCartItems = { ...cartItems };
+
+    updatedCartItems.items = updatedCartItems.items.map((item) => {
+      item.productId._id === id ? { ...item, quantity: newQuantity } : item;
+    });
+
+    setCartItems(updatedCartItems);
+    updateQuantity(id, newQuantity);
+    setQuantityChanged(true)
   };
 
   const incrementQuantity = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
+    console.log("id", id);
+    
+    const updatedItem = cartItems.items?.find(
+      (item) => item.productId._id === id
     );
+    console.log("UPDATE_ITEM", updatedItem);
+    if (updatedItem) {
+      const newQuantity = updatedItem.quantity + 1;
+      const updatedCartItems = { ...cartItems };
+      
+      // Update the items array immutably
+      updatedCartItems.items = updatedCartItems.items.map((item) =>
+        item.productId._id === id
+      ? { ...item, quantity: item.quantity + 1 }
+      : item
+    );
+    
+    setQuantityChanged(true); // Set flag to trigger fetch
+    setCartItems(updatedCartItems);
+    updateQuantity(id, newQuantity);
+    }
   };
 
   const decrementQuantity = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id
+    console.log("id", id);
+
+    const updatedItem = cartItems.items?.find(
+      (item) => item.productId._id === id
+    );
+    console.log("UPDATE_ITEM", updatedItem);
+    if (updatedItem) {
+      const newQuantity = updatedItem.quantity - 1;
+      console.log("NEW QUANTITY", newQuantity);
+
+      const updatedCartItems = { ...cartItems };
+      updatedCartItems.items = cartItems.items?.map((item) =>
+        item.productId._id === id
           ? { ...item, quantity: Math.max(1, item.quantity - 1) }
           : item
-      )
-    );
-  };
-  return (
+      );
 
+      setCartItems(updatedCartItems);
+
+      updateQuantity(id, newQuantity);
+    }
+  };
+
+ 
+  useEffect(() => {
+    fetchCarts();
+  }, []);
+  return (
     <>
       <div className="border border-gray-300 rounded-lg bg-white w-3/4">
         <div>
-          <h2 className="p-4 text-lg font-medium ">Shopping Cart</h2>
+          <h2 className="p-4 text-lg font-medium ">Shoppinhg Cart</h2>
         </div>
         <div className="border border-[#E4E7E9] h-9 grid grid-cols-[40%_11.25%_16%_auto] items-center bg-[#F2F4F5] text-xs text-[#475156]">
           <span className="ml-[6%]">PRODUCT</span>
@@ -89,31 +139,32 @@ function ShoppingCart() {
           <span className="ml-[15%]">SUB-TOTAL</span>
         </div>
         <hr />
+
         <div>
-          {items.map((item) => (
-            <div className="py-4" key={item.id}>
+          {cartItems?.items?.map((item) => (
+            <div className="py-4" key={item.productId?._id}>
               <div className="grid grid-cols-[38%_9.25%_14.25%_17.87%_auto] gap-4 items-center">
                 <div className="flex gap-1 pl-3 items-center">
                   <span className="mr-1">1</span>
                   <img
-                    src="../../assets/img1.png"
+                    src={item.productId?.photos}
                     alt="Product"
                     className="w-[72px] h-[72px] rounded-lg mr-4"
                   />
-                  <span>LGBBQ+ Nfc card</span>
+                  <span>{item.productId?.productName}</span>
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="text-sm text-[#080808] font-bold">
-                    Rs. {item.price}{" "}
+                    Rs. {item.productId?.discountPrice}{" "}
                   </span>
                   <span className="line-through text-[#807E7D] text-sm">
-                    Rs. {item.originalPrice}
+                    Rs. {item.productId?.shownPrice}
                   </span>
                 </div>
                 <div className="flex justify-around items-center border rounded py-2">
                   <button
                     className="px-2"
-                    onClick={() => decrementQuantity(item.id)}
+                    onClick={() => decrementQuantity(item?.productId?._id) }
                   >
                     −
                   </button>
@@ -121,24 +172,27 @@ function ShoppingCart() {
                     type="text"
                     value={item.quantity}
                     onChange={(e) =>
-                      handleQuantityChange(item.id, parseInt(e.target.value))
+                      handleQuantityChange(
+                        item.productId._id,
+                        parseInt(e.target.value)
+                      )
                     }
                     className="w-12 text-center mx-2"
                   />
                   <button
                     className="px-2"
-                    onClick={() => incrementQuantity(item.id)}
+                    onClick={() => incrementQuantity(item.productId?._id)}
                   >
                     +
                   </button>
                 </div>
                 <div className="flex justify-center items-center">
                   <span className="py-4 font-medium text-[#191C1F] text-sm">
-                    Rs. {item.price * item.quantity}
+                    Rs. {item.productId.discountPrice * item.quantity}
                   </span>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <button className="border border-[#807E7D] rounded text-[#807E7D] px-4 py-2 text-sm font-semibold">
+                  <button className="border border-[#807E7D] rounded text-[#807E7D] px-4 py-2 text-sm font-semibold" onClick={()=> fetchCarts() }>
                     UPDATE
                   </button>
                   <button className="text-gray-400">✖</button>
@@ -147,46 +201,7 @@ function ShoppingCart() {
             </div>
           ))}
           <hr className="mx-5" />
-          {/* <div className="py-4">
-            <div className="grid grid-cols-[38%_9.25%_14.25%_17.87%_auto] gap-4 items-center">
-              <div className="flex gap-1 pl-3 items-center">
-                <span className="mr-1">1</span>
-                <img
-                  src="../../assets/img1.png"
-                  alt="Product"
-                  className="w-[72px] h-[72px] rounded-lg mr-4"
-                />
-                <span>LGBBQ+ Nfc card</span>
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-sm text-[#080808] font-bold">Rs. 70</span>
-                <span className="line-through text-[#807E7D] text-sm">
-                  Rs. 60
-                </span>
-              </div>
-              <div className="flex justify-around items-center border rounded py-2">
-                <button className="px-2" onClick={decrementQuantity}>−</button>
-                <input
-                  type="text"
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className="w-12 text-center mx-2"
-                />
-                <button className="px-2" onClick={incrementQuantity}>+</button>
-              </div>
-              <div className="flex justify-center items-center">
-                <span className="py-4 font-medium text-[#191C1F] text-sm">
-                  Rs. {70 * quantity}
-                </span>
-              </div>
-              <div className="flex gap-4 items-center">
-                <button className="border border-[#807E7D] rounded text-[#807E7D] px-4 py-2 text-sm font-semibold">
-                  UPDATE
-                </button>
-                <button className="text-gray-400">✖</button>
-              </div>
-            </div>
-          </div> */}
+
           <hr />
           <div className="my-6 align-middle ">
             <button className="flex mx-auto px-4 py-2 border-[2px] border-[#807E7D] rounded-md text-sm font-bold text-[#807E7D]">
@@ -197,6 +212,6 @@ function ShoppingCart() {
       </div>
     </>
   );
-}
+};
 
 export default ShoppingCart;

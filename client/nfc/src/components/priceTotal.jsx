@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function PriceTotal() {
+function PriceTotal({data}) {
+  console.log("ARGS", data)
   const subtotal = 320;
   const shipping = "Free";
   const discount = 24;
   const tax = 61.99;
-  const total = subtotal - discount + tax;
+  const total = data.totalCost - discount + tax;
   return (
     <>
     <div className="p-4  border border-gray-300 rounded-lg bg-white">
@@ -14,11 +15,11 @@ function PriceTotal() {
       <div className=" bg-white">
         <div className="flex justify-between mb-2 text-sm">
           <span className="text-sm text-[#5F6C72]">Sub-total</span>
-          <span>Rs.320</span>
+          <span>Rs.{data.totalCost}</span>
         </div>
         <div className="flex justify-between mb-2 text-sm">
           <span className="text-sm text-[#5F6C72]">Shipping</span>
-          <span>Free</span>
+          <span>{shipping}</span>
         </div>
         <div className="flex justify-between mb-2 text-sm">
           <span className="text-sm text-[#5F6C72]">Discount</span>

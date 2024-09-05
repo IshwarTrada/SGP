@@ -59,7 +59,7 @@ const addToCart = asyncHandler(async (req, res) => {
         productId: productId, // Store only the product ID
         quantity,
         price: product.discountPrice, // Store the product's discountPrice
-        productSubTotal: product.discountPrice * quantity, // Set price using the product's discountPrice
+        productSubTotal: productId.discountPrice * quantity, // Set price using the product's discountPrice
       });
     }
 
