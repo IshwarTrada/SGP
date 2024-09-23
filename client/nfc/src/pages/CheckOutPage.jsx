@@ -170,6 +170,8 @@ function CheckOutPage() {
 
       createRazorpayOrder(500);
       paymentFetch(responseId);
+      console.log("TEST");
+      
       //   // window.location.href = "/placeorder";
       } catch (error) {
         console.log(error);
