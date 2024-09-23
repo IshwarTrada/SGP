@@ -59,7 +59,7 @@ const addToCart = asyncHandler(async (req, res) => {
         productId: productId, // Store only the product ID
         quantity,
         price: product.discountPrice, // Store the product's discountPrice
-        productSubTotal: productId.discountPrice * quantity, // Set price using the product's discountPrice
+        productSubTotal: product.discountPrice * quantity, // Set price using the product's discountPrice
       });
     }
 
@@ -166,7 +166,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, null, "Product removed from cart"));
   } catch (err) {
-    console.error("Error while removing item from cart : ", error);
+    console.error("Error while removing item from cart : ", err);
     throw new ApiError(
       500,
       `Something went wrong while removing item from cart ${err.message}`

@@ -1,6 +1,8 @@
 import React from "react";
 import img1 from "../../assets/img1.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function OrderSummaryItem({ title, image, quantity, price }) {
   return (
@@ -17,7 +19,9 @@ function OrderSummaryItem({ title, image, quantity, price }) {
   );
 }
 
-function OrderSummary() {
+function OrderSummary({handleSubmit}) {
+  const navigate = useNavigate();
+
   const items = [
     {
       title: "LGBBQ+ Nfc card",
@@ -34,6 +38,17 @@ function OrderSummary() {
       price: 250,
     },
   ];
+
+  const handleOrderSubmit = async () => {
+    try {
+      await handleSubmit();
+
+       // Trigger the API submission
+    } catch (error) {
+      console.error("Order submission failed", error);
+      alert("Failed to submit order.");
+    }
+  };
 
   return (
     <>
@@ -64,8 +79,8 @@ function OrderSummary() {
             <span>Total</span>
             <span className="font-semibold">Rs.167</span>
           </div>
-          <Link to={'/placeorder'} >
-          <button className="w-full mt-4 py-3 bg-[#080808] text-white rounded-md font-bold">
+          <Link >
+          <button type="button" onClick={handleOrderSubmit} className="w-full mt-4 py-3 bg-[#080808] text-white rounded-md font-bold">
           PLACE ORDER 
         </button>
         </Link>

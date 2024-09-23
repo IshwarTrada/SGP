@@ -25,13 +25,16 @@ function App() {
           <Route path="/" element={<LandingPage/>}/>
           
             <Route path="/dashboard" element={<LandingPage/>} />
+            <Route path="/placeorder" element={<LandingPage/>} />
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<Products />} />
             <Route path="/settings" element={<Settings />} />
 
             <Route path="/cartpage" element={<CartPage />} />
+            <Route path="/checkoutPage" element={<CheckOutPage />} />
         </Routes>
       </Router>
+
     </>
   );
 }

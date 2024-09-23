@@ -95,7 +95,7 @@ const verifyPaymentAndOrderCreate = asyncHandler(async (req, res) => {
     phone,
     extraNotes,
   } = req.body;
-
+// console.log("fname",)
   if (
     !fname ||
     !lname ||

@@ -33,6 +33,7 @@ const createOrder = asyncHandler(async (req, res) => {
   try {
     // Step 4: Create a new order
     const order = await razorpay.orders.create(options);
+    console.log("ORDER", order);
 
     // Step 5: Order details to be sent to the client and customize the payment methods
     return res.json({
