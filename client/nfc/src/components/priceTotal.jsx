@@ -7,7 +7,7 @@ function PriceTotal({data}) {
   const shipping = "Free";
   const discount = 24;
   const tax = 61.99;
-  const total = data.totalCost - discount + tax;
+  // const total = data.totalCost - discount + tax;
   return (
     <>
     <div className="p-4  border border-gray-300 rounded-lg bg-white">
@@ -32,7 +32,7 @@ function PriceTotal({data}) {
         <hr />
         <div className="flex justify-between mt-4  text-base">
           <span>Total</span>
-          <span className="font-semibold">Rs.{total.toFixed(2)}</span>
+          <span className="font-semibold">Rs.{(data.totalCost - discount + tax).toFixed(2)}</span>
         </div>
       </div>
       <Link to={"/checkoutPage"}>

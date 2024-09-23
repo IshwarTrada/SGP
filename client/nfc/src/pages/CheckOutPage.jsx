@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import CheckoutInformation from "../components/CheckoutInformation";
 import OrderSummary from "../components/OrderSummary";
 import BillingInformation from "../components/BillingInformation";
@@ -8,7 +8,8 @@ import axios from "axios";
 
 function CheckOutPage() {
   const [responseId, setResponseId] = useState("");
-  const [responseState, setResponseState] =useState([]);
+  const [productdata, setProductdata] = useState("");
+  const [responseState, setResponseState] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -62,20 +63,20 @@ function CheckOutPage() {
 
   const createRazorpayOrder = async (amount) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/razorpay/createOrder", {
-        amount: amount * 100, // Amount in paise
-        currency: "INR",
-      },{
-        headers:{
-          "Content-Type":"application/json",
-          
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/razorpay/createOrder",
+        {
+          amount: amount * 100, // Amount in paise
+          currency: "INR",
         },
-        withCredentials: true,
-      }
-    
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
       console.log(response);
-      
 
       const { order_id, config } = response.data;
       handleRazorpayScreen(order_id, config, amount);
@@ -121,7 +122,9 @@ function CheckOutPage() {
     const paymentId = e.target.paymentId.value;
 
     axios
-      .get(`http://localhost:3000/api/v1/razorpay/fetchPaymentDetails/${paymentId}`)
+      .get(
+        `http://localhost:3000/api/v1/razorpay/fetchPaymentDetails/${paymentId}`
+      )
       .then((response) => {
         console.log(response.data);
         setResponseState(response.data);
@@ -131,6 +134,25 @@ function CheckOutPage() {
       });
   };
 
+  const productDetail = async () => {
+    const API = "http://localhost:3000/api/v1/cart/getCart";
+
+    const response = await axios.get(API, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    if (response.status == 200) {
+      const data = response.data;
+      setProductdata(data?.data);
+      console.log("DATA>>>", data.data);
+    } else {
+      console.log("CART API NOT WORK");
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = async () => {
     const validationErrors = validateForm();
@@ -138,46 +160,49 @@ function CheckOutPage() {
       setErrors(validationErrors);
     } else {
       try {
-      //   const orderAPI = "http://localhost:3000/api/v1/razorpay/createOrder";
+        //   const orderAPI = "http://localhost:3000/api/v1/razorpay/createOrder";
 
-      //   const response = await fetch(orderAPI, {
-      //     method: "POST",
-      //     headers: {
-      //       "content-Type": "application/json",
-      //     },
-      //     credentials: "include",
-      //     body: JSON.stringify({
-      //       fname: formData.firstName,
-      //       lname: formData.lastName,
-      //       companyName: formData.companyName,
-      //       shippingAddress: formData.address,
-      //       zip: formData.zipCode,
-      //       city: formData.city,
-      //       state: formData.state,
-      //       phone: formData.phoneNumber,
-      //       extraNotes: "this is best product",
-      //       amount: 5000,
-      //     }),
-      //   });
+        //   const response = await fetch(orderAPI, {
+        //     method: "POST",
+        //     headers: {
+        //       "content-Type": "application/json",
+        //     },
+        //     credentials: "include",
+        //     body: JSON.stringify({
+        //       fname: formData.firstName,
+        //       lname: formData.lastName,
+        //       companyName: formData.companyName,
+        //       shippingAddress: formData.address,
+        //       zip: formData.zipCode,
+        //       city: formData.city,
+        //       state: formData.state,
+        //       phone: formData.phoneNumber,
+        //       extraNotes: "this is best product",
+        //       amount: 5000,
+        //     }),
+        //   });
 
-      //   if (!response.ok) {
-      //     throw new Error("Network response was not ok");
-      //   }
+        //   if (!response.ok) {
+        //     throw new Error("Network response was not ok");
+        //   }
 
-      //   const result = await response.json();
-      //   console.log("ORDER CREATED SUCCESFULLY", result);
+        //   const result = await response.json();
+        //   console.log("ORDER CREATED SUCCESFULLY", result);
+        console.log("ADDRESS",formData)
+        createRazorpayOrder(productdata.totalCost);
+        paymentFetch(responseId);
+        console.log("TEST");
 
-
-      createRazorpayOrder(500);
-      paymentFetch(responseId);
-      console.log("TEST");
-      
-      //   // window.location.href = "/placeorder";
+        //   // window.location.href = "/placeorder";
       } catch (error) {
         console.log(error);
       }
     }
   };
+
+  useEffect(() => {
+    productDetail();
+  }, []);
 
   return (
     <>
@@ -191,9 +216,8 @@ function CheckOutPage() {
           />
           <AdditionalInformation />
         </div>
-        <OrderSummary handleSubmit={handleSubmit} />
+        <OrderSummary handleSubmit={handleSubmit} productdata={productdata} />
       </div>
-
     </>
   );
 }
