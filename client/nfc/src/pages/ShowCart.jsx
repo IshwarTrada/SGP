@@ -45,12 +45,15 @@ const ShowCart=()=> {
   return (
     <>
       <Navi />
+      <div className="flex flex-col min-h-screen">
 
       <div className="pt-24 p-14  flex gap-1">
         <ShoppingCart cartItems={cartItems} setCartItems={setCartItems} fetchCarts={fetchCarts} setQuantityChanged={setQuantityChanged} />
         <CartTotal cartItems={cartItems} />
       </div>
+      <div className="flex-grow"></div>
       <Staticfooter />
+      </div>
     </>
   );
 }

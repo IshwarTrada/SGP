@@ -17,7 +17,7 @@ const ProductInformation = () => {
                     <div className="w-auto p-4 flex flex-col items-start justify-start text-left border border-gray-500 overflow-hidden ">
                          <div className="relative w-full border-b border-gray-200">
                               <div className="flex justify-center">
-                                   <Link to="/#description"><button className={getTabClass('description')} onClick={() => setActiveTab('description')}>Description</button></Link>
+                                   <Link to="#desc"><button className={getTabClass('description')} onClick={() => setActiveTab('description')}>Description</button></Link>
                                    <Link to="#specs"><button
                                         className={getTabClass('specification')}
                                         onClick={() => setActiveTab('specification')}>Specification

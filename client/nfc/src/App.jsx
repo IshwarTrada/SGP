@@ -37,7 +37,7 @@ function App() {
             <Route path="/cartpage" element={<CartPage />} />
             <Route path="/checkoutPage" element={<CheckOutPage />} />
 
-            <Route path="/product-detailed-view" element={ <ProductDetail/> } ></Route>
+            <Route path="/product-detailed-view/:id" element={ <ProductDetail/> } ></Route>
         </Routes>
       </Router>
 
