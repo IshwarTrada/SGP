@@ -14,8 +14,7 @@ function Navi() {
      const navItems = [
           { name: "Dashboard", path: "/dashboard" },
           { name: "Products", path: "/products" },
-          { name: "Analytics", path: "/analytics" },
-          { name: "Orders", path: "/settings" }
+          { name: "Orders", path: "/orders" }
      ];
 
      return (
@@ -26,7 +25,7 @@ function Navi() {
                               className=""
                               id="logo"
                               alt="logo"
-                              src="./src/assets/logo.png"
+                              src="../src/assets/logo.png"
                          />
                     </Link>
                </div>

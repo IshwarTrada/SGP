@@ -18,12 +18,13 @@ const productData = [
     image: "./src/assets/logo.png",
     uploadImageIcon: "./src/assets/DocUpload.svg",
     paymentMethods: [
-      "./src/assets/Gpay.svg",
-      "./src/assets/i-pay.svg",
-      "./src/assets/Samsung-pay.svg",
-      "./src/assets/Visa.svg",
-      "./src/assets/MasterCard.svg",
-      "./src/assets/payPal.svg",
+      
+      "../src/assets/Gpay.svg",
+      "../src/assets/i-pay.svg",
+      "../src/assets/Samsung-pay.svg",
+      "../src/assets/Visa.svg",
+      "../src/assets/MasterCard.svg",
+      "../src/assets/payPal.svg",
     ],
     thumbnails: ["./src/assets/visa.svg", "./src/assets/MasterCard.svg"],
   },
@@ -53,7 +54,6 @@ const ProductDetail = () => {
     return `${discount}% OFF`;
   };
 
-  const discountLabel = calculateDiscount(product.originalPrice, product.price);
 
   // Handle file drop
   const handleDrop = (e) => {
