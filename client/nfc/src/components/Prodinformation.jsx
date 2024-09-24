@@ -5,6 +5,7 @@ import ProdSpec from './ProdSpecification';
 
 const ProductInformation = () => {
      const [activeTab, setActiveTab] = useState('description');
+     
 
      const getTabClass = (tab) =>
           `px-8 py-5 text-xl uppercase font-medium ${activeTab === tab ? 'text-black border-b-2 border-gray-900' : 'text-[#c1ccdb]'

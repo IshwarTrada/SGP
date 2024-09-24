@@ -30,7 +30,7 @@ const MainLayout = () => {
       }
     };
     const handleCardClick = (id) => {
-        navigate(`/products/${id}`); // Navigate to product detail page with _id in the URL
+        navigate(`/prod-description/${id}`); // Navigate to product detail page with _id in the URL
       };
 
     useEffect(()=>{
