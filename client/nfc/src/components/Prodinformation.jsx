@@ -24,7 +24,7 @@ const ProductInformation = () => {
                                    <Link to="#review"><button
                                         className={getTabClass('review')}
                                         onClick={() => setActiveTab('review')}>Review
-                                   </button></Link>
+                                   </button></Link>~
                               </div>
                          </div>
 
