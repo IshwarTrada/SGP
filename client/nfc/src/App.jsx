@@ -14,6 +14,7 @@ import Checkout from "./pages/Checkout.jsx";
 import CheckOutPage from "./pages/CheckOutPage.jsx";
 import MainLayout from "./pages/MainProductsPage.jsx";
 import ProductInformation from "./components/Prodinformation.jsx";
+import ProductDetail from "./components/ProductDetails.jsx";
 
 
 function App() {
@@ -23,7 +24,6 @@ function App() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
-          {/* <Route path="/" element={<Home />}/> */}
           <Route path="/cart" element={<ShowCart />} />
           <Route path="/" element={<LandingPage/>}/>
           
@@ -32,11 +32,12 @@ function App() {
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<MainLayout />} />
             <Route path="/settings" element={<Settings />} />
-
+            <Route path="/checkout" element={<Checkout />} />
+            
             <Route path="/cartpage" element={<CartPage />} />
             <Route path="/checkoutPage" element={<CheckOutPage />} />
 
-            <Route path="/prod-description" element={ <ProductInformation/> } ></Route>
+            <Route path="/product-detailed-view" element={ <ProductDetail/> } ></Route>
         </Routes>
       </Router>
 

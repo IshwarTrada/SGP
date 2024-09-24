@@ -5,6 +5,7 @@ import ProdSpec from './ProdSpecification';
 
 const ProductInformation = () => {
      const [activeTab, setActiveTab] = useState('description');
+     
 
      const getTabClass = (tab) =>
           `px-8 py-5 text-xl uppercase font-medium ${activeTab === tab ? 'text-black border-b-2 border-gray-900' : 'text-[#c1ccdb]'
@@ -16,7 +17,7 @@ const ProductInformation = () => {
                     <div className="w-auto p-4 flex flex-col items-start justify-start text-left border border-gray-500 overflow-hidden ">
                          <div className="relative w-full border-b border-gray-200">
                               <div className="flex justify-center">
-                                   <Link to="/prod-description"><button className={getTabClass('description')} onClick={() => setActiveTab('description')}>Description</button></Link>
+                                   <Link to="/product-detailed-view"><button className={getTabClass('description')} onClick={() => setActiveTab('description')}>Description</button></Link>
                                    <Link to="#specs"><button
                                         className={getTabClass('specification')}
                                         onClick={() => setActiveTab('specification')}>Specification
