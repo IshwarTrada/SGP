@@ -5,6 +5,7 @@ import BillingInformation from "../components/BillingInformation";
 import AdditionalInformation from "../components/AdditionalInformation";
 import { Await, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navi from "../components/Navbar";
 
 function CheckOutPage() {
   const [responseId, setResponseId] = useState("");
@@ -188,7 +189,8 @@ function CheckOutPage() {
 
         //   const result = await response.json();
         //   console.log("ORDER CREATED SUCCESFULLY", result);
-        console.log("ADDRESS",formData)
+        console.log("ADDRESS", formData);
+        localStorage.setItem('billingData', JSON.stringify(formData));
         createRazorpayOrder(productdata.totalCost);
         paymentFetch(responseId);
         console.log("TEST");
@@ -206,6 +208,7 @@ function CheckOutPage() {
 
   return (
     <>
+      <Navi />
       <div className="flex gap-3 px-14 py-9">
         {/* <CheckoutInformation  /> */}
         <div className="w-2/3 pt-20">

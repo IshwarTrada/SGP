@@ -12,6 +12,7 @@ import LandingPage from "./pages/LandingPage.jsx";
 import ShowCart from "./pages/ShowCart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import CheckOutPage from "./pages/CheckOutPage.jsx";
+import CheckoutAddress from "./components/CheckoutAddress.jsx";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
             <Route path="/analytics" element={<LandingPage/>} />
             <Route path="/products" element={<Products />} />
             <Route path="/settings" element={<Settings />} />
-
+            <Route path="/checkout" element={<Checkout />} />
+            
             <Route path="/cartpage" element={<CartPage />} />
             <Route path="/checkoutPage" element={<CheckOutPage />} />
         </Routes>
