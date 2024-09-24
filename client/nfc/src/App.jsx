@@ -13,6 +13,7 @@ import ShowCart from "./pages/ShowCart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import CheckOutPage from "./pages/CheckOutPage.jsx";
 import MainLayout from "./pages/MainProductsPage.jsx";
+import ProductInformation from "./components/Prodinformation.jsx";
 
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
             
             <Route path="/cartpage" element={<CartPage />} />
             <Route path="/checkoutPage" element={<CheckOutPage />} />
+
+            <Route path="/prod-description" element={ <ProductInformation/> } ></Route>
         </Routes>
       </Router>
 
