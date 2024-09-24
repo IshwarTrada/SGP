@@ -76,7 +76,7 @@ const NFCProducts = () => {
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                 }}
-              />
+              ></div>
             </Link>
 
             <div className="text-center mt-4">

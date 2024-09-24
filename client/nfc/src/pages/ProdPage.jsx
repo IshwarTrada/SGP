@@ -3,6 +3,7 @@ import ActiveFiltersAndResults from "../components/ActiveFilter";
 import SearchbarProd from "../components/SearchbarProd";
 import ProdDropdown from "../components/SortingDropdown";
 import Pagination from "../components/ChangePages";
+import { Link } from "react-router-dom";
 
 // const cards = [
 //   {
@@ -100,18 +101,19 @@ const Products = ({handleCardClick, products}) => {
           {products.map((card) => (
             <div
               key={card._id}
-              onClick={()=> handleCardClick(card._id)}
+              
               className="relative w-[23rem] h-[275px] mx-2 rounded-lg cursor-pointer overflow-hidden"
             >
               <img
                 src={card.photos}
                 alt={card.productName}
+                onClick={()=> handleCardClick(card._id)}
                 className="w-full h-[196px] object-cover rounded-xl border-[2px] border-black"
               />
               <div className="absolute top-[9.5rem] left-4 bg-black bg-opacity-80 px-2 py-1 rounded-full text-white">
                 {card.productRating} ⭐
               </div>
-
+            <Link to={"/cart"}>
               <div
                 className="absolute top-[9.5rem] right-2 w-9 h-9 rounded-full bg-black bg-opacity-80 flex justify-center items-center cursor-pointer"
                 style={{
@@ -121,7 +123,7 @@ const Products = ({handleCardClick, products}) => {
                   backgroundRepeat: "no-repeat",
                 }}
               />
-
+</Link>
               <div className="text-center mt-4">
                 <div className="text-xl font-bold">{card.productName}</div>
                 <div className="text-lg text-gray-900 mt-2">
