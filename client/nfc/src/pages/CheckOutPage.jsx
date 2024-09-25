@@ -191,7 +191,8 @@ function CheckOutPage() {
         //   console.log("ORDER CREATED SUCCESFULLY", result);
         console.log("ADDRESS", formData);
         localStorage.setItem('billingData', JSON.stringify(formData));
-        createRazorpayOrder(productdata.totalCost);
+        const totalAmount = productdata.totalCost - 24 +61.99;
+        createRazorpayOrder((totalAmount));
         paymentFetch(responseId);
         console.log("TEST");
 

@@ -67,7 +67,7 @@ const NFCProducts = () => {
               {product.productRating} ⭐
             </div>
 
-            <Link to="/signin">
+            <Link to="/cart">
               <div
                 className="absolute top-[9.5rem] right-1 w-9 h-9 rounded-full bg-black bg-opacity-80 flex justify-center items-center cursor-pointer"
                 style={{
