@@ -91,7 +91,7 @@ const NFCProducts = () => {
           </div>
         ))}
 
-        <div className="absolute right-5 mt-[40px] mr-[50px]">
+        <div className="absolute right-5 mt-[40px]">
           <Link to="/products">
             <div className="w-24 h-24 rounded-full bg-gray-300 flex justify-center items-center cursor-pointer">
               <div
