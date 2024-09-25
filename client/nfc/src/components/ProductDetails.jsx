@@ -13,7 +13,7 @@ const productData = [
     price: 199,
     originalPrice: 6000,
     // The discount is now calculated dynamically
-    rating: 3.2,
+    rating: 4,
     userFeedbackCount: 696969,
     image: "./src/assets/logo.png",
     uploadImageIcon: "./src/assets/DocUpload.svg",
@@ -207,7 +207,7 @@ const addToCart = async (id, data) => {
                     )
                   )}
                 </div>
-                <span className="text-lg font-semibold">
+                <span className="text-lg font-semibold ml-1">
                   {product.rating  }
                   Star Rating
                 </span>
